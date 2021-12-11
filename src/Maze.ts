@@ -1,13 +1,13 @@
 import { range } from 'lodash';
 
-enum Side {
+export enum Side {
   Top,
   Left,
   Bottom,
   Right,
 }
 
-type Dimensions = {
+export type Dimensions = {
   width: number;
   height: number;
 };
@@ -37,8 +37,8 @@ export default class Maze {
   constructor(dimensions: Dimensions) {
     this.#dimensions = { ...dimensions };
 
-    const verticalDimensions = this.#verticalDimensions();
-    const horizontalDimensions = this.#horizontalDimensions();
+    const verticalDimensions = this.getVerticalDimensions();
+    const horizontalDimensions = this.getHorizontalDimensions();
     this.#walls = range(
       0,
       verticalDimensions.width * verticalDimensions.height +
@@ -46,8 +46,14 @@ export default class Maze {
     ).map(() => false);
   }
 
+  // Return the dimensions of the maze
+  getDimensions(): Dimensions {
+    // Clone the dimensions so they can't be mutated
+    return { ...this.#dimensions };
+  }
+
   // Return the dimensions of the grid of vertical walls
-  #verticalDimensions(): Dimensions {
+  getVerticalDimensions(): Dimensions {
     return {
       width: this.#dimensions.width + 1,
       height: this.#dimensions.height,
@@ -55,7 +61,7 @@ export default class Maze {
   }
 
   // Return the dimensions of the grid of horizontal walls
-  #horizontalDimensions(): Dimensions {
+  getHorizontalDimensions(): Dimensions {
     return {
       width: this.#dimensions.width,
       height: this.#dimensions.height + 1,
@@ -71,19 +77,19 @@ export default class Maze {
       // Normalize right walls to the corresponding top left wall
       return this.#coordinateToIndex({ x: x + 1, y, side: Side.Left });
     } else if (side === Side.Top) {
-      const dimensions = this.#horizontalDimensions();
+      const dimensions = this.getHorizontalDimensions();
       if (x >= dimensions.width || y >= dimensions.height) {
         throw new Error('Coordinate out of bounds');
       }
 
       return x + y * dimensions.width;
     } else if (side === Side.Left) {
-      const dimensions = this.#horizontalDimensions();
+      const dimensions = this.getHorizontalDimensions();
       if (x >= dimensions.width || y >= dimensions.height) {
         throw new Error('Coordinate out of bounds');
       }
 
-      const verticalDimensions = this.#verticalDimensions();
+      const verticalDimensions = this.getVerticalDimensions();
       return (
         // All vertical walls are stored before the horizontal walls
         verticalDimensions.width * verticalDimensions.height +
@@ -98,8 +104,11 @@ export default class Maze {
     return this.#walls[this.#coordinateToIndex({ x, y, side })];
   }
 
-  // Set the presence of a wall at the specified coordinates
-  set(x: number, y: number, side: Side, value: boolean) {
-    this.#walls[this.#coordinateToIndex({ x, y, side })] = value;
+  // Return a new maze that clones the existing maze but with the presence of a wall set at the specified coordinates
+  set(x: number, y: number, side: Side, value: boolean): Maze {
+    const maze = new Maze(this.#dimensions);
+    maze.#walls = this.#walls.slice(0);
+    maze.#walls[this.#coordinateToIndex({ x, y, side })] = value;
+    return maze;
   }
 }

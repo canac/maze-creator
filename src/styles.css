@@ -1,0 +1,30 @@
+body {
+  --global-margin: 8px;
+  margin: var(--global-margin);
+}
+
+.maze {
+  --dimensions: calc(
+    min(100vw - var(--global-margin) * 2, 100vh - var(--global-margin) * 2)
+  );
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-gap: 2px;
+  grid-template-columns: repeat(var(--maze-columns), 1fr);
+  width: var(--dimensions);
+  height: var(--dimensions);
+}
+
+.cell {
+  background-color: #dddddd;
+  aspect-ratio: 1 / 1;
+  min-width: 3em;
+}
+
+.cell .top-wall {
+  border-top: 3px solid black;
+}
+
+.cell .left-wall {
+  border-left: 3px solid black;
+}
