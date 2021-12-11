@@ -1,28 +1,36 @@
 body {
   --global-margin: 8px;
+  --global-width: calc(100vw - var(--global-margin) * 2);
+  --global-height: calc(100vh - var(--global-margin) * 2);
   margin: var(--global-margin);
 }
 
+#app {
+  width: var(--global-width);
+  height: var(--global-height);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
 .maze {
-  --dimensions: calc(
-    min(100vw - var(--global-margin) * 2, 100vh - var(--global-margin) * 2)
-  );
+  --dimensions: calc(min(var(--global-width), var(--global-height)));
   --wall-width: 3px;
   --wall-color: black;
   --hover-add-color: hsl(120, 50%, 50%);
   --hover-remove-color: hsl(0, 50%, 50%);
+  --min-size: 3em;
   display: grid;
   grid-auto-rows: 1fr;
   grid-template-columns: repeat(var(--maze-columns), 1fr);
   width: var(--dimensions);
   height: var(--dimensions);
+  min-width: calc(var(--min-size) * var(--maze-columns));
+  min-height: calc(var(--min-size) * var(--maze-columns));
 }
 
 .cell {
   background-color: #dddddd;
-  aspect-ratio: 1 / 1;
-  min-width: 3em;
-  padding: var(--wall-width);
   border: var(--wall-width) solid white;
 }
 
