@@ -6,9 +6,9 @@ body {
 }
 
 #app {
+  display: grid;
   width: var(--global-width);
   height: var(--global-height);
-  display: grid;
   align-items: center;
   justify-content: center;
 }
@@ -21,17 +21,17 @@ body {
   --hover-remove-color: hsl(0, 50%, 50%);
   --min-size: 3em;
   display: grid;
+  width: var(--dimensions);
+  min-width: calc(var(--min-size) * var(--maze-columns));
+  height: var(--dimensions);
+  min-height: calc(var(--min-size) * var(--maze-columns));
   grid-auto-rows: 1fr;
   grid-template-columns: repeat(var(--maze-columns), 1fr);
-  width: var(--dimensions);
-  height: var(--dimensions);
-  min-width: calc(var(--min-size) * var(--maze-columns));
-  min-height: calc(var(--min-size) * var(--maze-columns));
 }
 
 .cell {
-  background-color: #dddddd;
   border: var(--wall-width) solid white;
+  background-color: #dddddd;
 }
 
 .cell.wall-left {
