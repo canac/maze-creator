@@ -7,9 +7,9 @@ body {
   --dimensions: calc(
     min(100vw - var(--global-margin) * 2, 100vh - var(--global-margin) * 2)
   );
+  --wall-width: 3px;
   display: grid;
   grid-auto-rows: 1fr;
-  grid-gap: 2px;
   grid-template-columns: repeat(var(--maze-columns), 1fr);
   width: var(--dimensions);
   height: var(--dimensions);
@@ -19,12 +19,19 @@ body {
   background-color: #dddddd;
   aspect-ratio: 1 / 1;
   min-width: 3em;
+  padding: var(--wall-width);
+  border: var(--wall-width) solid white;
 }
 
-.cell .top-wall {
-  border-top: 3px solid black;
+.cell.wall-left {
+  border-left: var(--wall-width) solid black;
 }
-
-.cell .left-wall {
-  border-left: 3px solid black;
+.cell.wall-top {
+  border-top: var(--wall-width) solid black;
+}
+.cell.wall-right {
+  border-right: var(--wall-width) solid black;
+}
+.cell.wall-bottom {
+  border-bottom: var(--wall-width) solid black;
 }

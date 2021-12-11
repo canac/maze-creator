@@ -1,10 +1,10 @@
 import { range } from 'lodash';
 
 export enum Side {
-  Top,
   Left,
-  Bottom,
+  Top,
   Right,
+  Bottom,
 }
 
 export type Dimensions = {
@@ -18,7 +18,7 @@ type WallCoordinate = {
   side: Side;
 };
 
-export default class Maze {
+export class Maze {
   // Walls are stored in a boolean array where true represents a wall, false represents the absence of a wall. All
   // vertical walls (that run up along the y axis) are stored first, followed by all horizontal walls (that run side to
   // side along the x axis. Walls are stored in order going in the increasing x-axis direction, followed by going in the
@@ -43,7 +43,7 @@ export default class Maze {
       0,
       verticalDimensions.width * verticalDimensions.height +
         horizontalDimensions.width * horizontalDimensions.height,
-    ).map(() => false);
+    ).map(() => true);
   }
 
   // Return the dimensions of the maze
@@ -70,23 +70,23 @@ export default class Maze {
 
   // Convert a wall coordinate to its index in the walls array
   #coordinateToIndex({ x, y, side }: WallCoordinate): number {
-    if (side === Side.Bottom) {
+    if (side === Side.Right) {
+      // Normalize right walls to the corresponding left wall
+      return this.#coordinateToIndex({ x: x + 1, y, side: Side.Left });
+    } else if (side === Side.Bottom) {
       // Normalize bottom walls to the corresponding top wall
       return this.#coordinateToIndex({ x, y: y + 1, side: Side.Top });
-    } else if (side === Side.Right) {
-      // Normalize right walls to the corresponding top left wall
-      return this.#coordinateToIndex({ x: x + 1, y, side: Side.Left });
-    } else if (side === Side.Top) {
-      const dimensions = this.getHorizontalDimensions();
+    } else if (side === Side.Left) {
+      const dimensions = this.getVerticalDimensions();
       if (x >= dimensions.width || y >= dimensions.height) {
-        throw new Error('Coordinate out of bounds');
+        throw new Error(`Coordinate (${x}, ${y}) out of bounds`);
       }
 
       return x + y * dimensions.width;
-    } else if (side === Side.Left) {
+    } else if (side === Side.Top) {
       const dimensions = this.getHorizontalDimensions();
       if (x >= dimensions.width || y >= dimensions.height) {
-        throw new Error('Coordinate out of bounds');
+        throw new Error(`Coordinate (${x}, ${y}) out of bounds`);
       }
 
       const verticalDimensions = this.getVerticalDimensions();
