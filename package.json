@@ -1,0 +1,23 @@
+{
+  "name": "maze-creator",
+  "version": "1.0.0",
+  "description": "Maze Creator web app",
+  "source": "src/index.html",
+  "scripts": {
+    "dev": "parcel",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canac/maze-creator.git"
+  },
+  "author": "Caleb Cox <canac@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/canac/maze-creator/issues"
+  },
+  "homepage": "https://github.com/canac/maze-creator#readme"
+}
