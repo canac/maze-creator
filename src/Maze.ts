@@ -12,11 +12,37 @@ export type Dimensions = {
   height: number;
 };
 
-type WallCoordinate = {
+export class Wall {
   x: number;
   y: number;
   side: Side;
-};
+
+  // Create a new wall, normalizing it in the process
+  constructor(x: number, y: number, side: Side) {
+    if (side === Side.Right) {
+      // Normalize right walls to the corresponding left wall
+      this.x = x + 1;
+      this.y = y;
+      this.side = Side.Left;
+    } else if (side === Side.Bottom) {
+      // Normalize bottom walls to the corresponding top wall
+      this.x = x;
+      this.y = y + 1;
+      this.side = Side.Top;
+    } else {
+      this.x = x;
+      this.y = y;
+      this.side = side;
+    }
+  }
+
+  // Determine whether this wall represents the same wall as another wall
+  equals(other: Wall): boolean {
+    const { x: x1, y: y1, side: side1 } = this;
+    const { x: x2, y: y2, side: side2 } = other;
+    return x1 === x2 && y1 === y2 && side1 === side2;
+  }
+}
 
 export class Maze {
   // Walls are stored in a boolean array where true represents a wall, false represents the absence of a wall. All
@@ -69,14 +95,10 @@ export class Maze {
   }
 
   // Convert a wall coordinate to its index in the walls array
-  #coordinateToIndex({ x, y, side }: WallCoordinate): number {
-    if (side === Side.Right) {
-      // Normalize right walls to the corresponding left wall
-      return this.#coordinateToIndex({ x: x + 1, y, side: Side.Left });
-    } else if (side === Side.Bottom) {
-      // Normalize bottom walls to the corresponding top wall
-      return this.#coordinateToIndex({ x, y: y + 1, side: Side.Top });
-    } else if (side === Side.Left) {
+  #coordinateToIndex(wall: Wall): number {
+    const { x, y, side } = wall;
+
+    if (side === Side.Left) {
       const dimensions = this.getVerticalDimensions();
       if (x >= dimensions.width || y >= dimensions.height) {
         throw new Error(`Coordinate (${x}, ${y}) out of bounds`);
@@ -101,14 +123,14 @@ export class Maze {
 
   // Return a boolean representing the presence of a wall at the specified coordinates
   get(x: number, y: number, side: Side): boolean {
-    return this.#walls[this.#coordinateToIndex({ x, y, side })];
+    return this.#walls[this.#coordinateToIndex(new Wall(x, y, side))];
   }
 
   // Return a new maze that clones the existing maze but with the presence of a wall set at the specified coordinates
   set(x: number, y: number, side: Side, value: boolean): Maze {
     const maze = new Maze(this.#dimensions);
     maze.#walls = this.#walls.slice(0);
-    maze.#walls[this.#coordinateToIndex({ x, y, side })] = value;
+    maze.#walls[this.#coordinateToIndex(new Wall(x, y, side))] = value;
     return maze;
   }
 }

@@ -24,14 +24,27 @@ body {
 }
 
 .cell.wall-left {
-  border-left: var(--wall-width) solid black;
+  border-left-color: black;
 }
 .cell.wall-top {
-  border-top: var(--wall-width) solid black;
+  border-top-color: black;
 }
 .cell.wall-right {
-  border-right: var(--wall-width) solid black;
+  border-right-color: black;
 }
 .cell.wall-bottom {
-  border-bottom: var(--wall-width) solid black;
+  border-bottom-color: black;
+}
+
+.cell.hover-wall-left {
+  border-left-color: red;
+}
+.cell.hover-wall-top {
+  border-top-color: red;
+}
+.cell.hover-wall-right {
+  border-right-color: red;
+}
+.cell.hover-wall-bottom {
+  border-bottom-color: red;
 }
