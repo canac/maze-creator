@@ -1,82 +1,65 @@
 body {
-  --global-margin: 8px;
-  --global-width: calc(100vw - var(--global-margin) * 2 - 8em);
-  --global-height: calc(100vh - var(--global-margin) * 2 - 4em);
-  margin: var(--global-margin);
+  --global-width: 100vw;
+  --global-height: 100vh;
+  margin: 0;
 }
 
 #app {
   display: grid;
   width: var(--global-width);
   height: var(--global-height);
-  align-items: center;
-  justify-content: center;
 }
 
 .maze {
-  display: grid;
-  align-items: center;
-}
-
-.prepend-row {
-  grid-column-end: 2;
-  grid-column-start: 2;
-  grid-row-end: 1;
-  grid-row-start: 1;
-}
-.prepend-column {
-  grid-column-end: 1;
-  grid-column-start: 1;
-  grid-row-end: 2;
-  grid-row-start: 2;
-}
-.append-row {
-  grid-column-end: 2;
-  grid-column-start: 2;
-  grid-row-end: 3;
-  grid-row-start: 3;
-}
-.append-column {
-  grid-column-end: 3;
-  grid-column-start: 3;
-  grid-row-end: 2;
-  grid-row-start: 2;
-}
-
-.prepend-row,
-.append-row {
-  width: 4em;
-  height: 2em;
-  justify-self: center;
-}
-.prepend-column,
-.append-column {
-  width: 4em;
-  height: 2em;
-}
-
-.walls {
   --dimensions: calc(min(var(--global-width), var(--global-height)));
   --wall-width: 3px;
   --wall-color: black;
   --hover-add-color: hsl(120, 50%, 50%);
   --hover-remove-color: hsl(0, 50%, 50%);
   --min-size: 3em;
+
   display: grid;
   width: var(--dimensions);
-  min-width: calc(var(--min-size) * var(--maze-columns));
+  min-width: calc(var(--min-size) * (var(--maze-columns) + 2));
   height: var(--dimensions);
-  min-height: calc(var(--min-size) * var(--maze-columns));
-  grid-auto-rows: 1fr;
-  grid-column-end: 2;
-  grid-column-start: 2;
-  grid-row-end: 2;
-  grid-row-start: 2;
-  grid-template-columns: repeat(var(--maze-columns), 1fr);
+  min-height: calc(var(--min-size) * (var(--maze-rows) + 2));
+  align-items: center;
+  align-self: center;
+  grid-template:
+    repeat(calc(var(--maze-rows) + 2), 1fr) /
+    repeat(calc(var(--maze-columns) + 2), 1fr);
+  justify-self: center;
+}
+
+.maze .add {
+  padding: 8px;
+  border: none;
+  background-color: transparent;
+  color: hsl(120, 50%, 50%);
+  cursor: pointer;
+  font-size: 3em;
+}
+
+.prepend-row {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+.prepend-column {
+  grid-column: 1;
+  grid-row: 1 / -1;
+}
+.append-row {
+  grid-column: 1 / -1;
+  grid-row: -2;
+}
+.append-column {
+  grid-column: -2;
+  grid-row: 1 / -1;
 }
 
 .cell {
   border: var(--wall-width) solid white;
+  aspect-ratio: 1 / 1;
   background-color: #dddddd;
 }
 
