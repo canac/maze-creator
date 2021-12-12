@@ -42,16 +42,28 @@ export function App() {
       }
       onMouseLeave={() => setHover(null)}
     >
-      <button className="add prepend-row">
+      <button
+        className="add prepend-row"
+        onClick={() => setMaze(maze.prependRows(1))}
+      >
         <FontAwesomeIcon icon={faPlusCircle} />
       </button>
-      <button className="add prepend-column">
+      <button
+        className="add prepend-column"
+        onClick={() => setMaze(maze.prependColumns(1))}
+      >
         <FontAwesomeIcon icon={faPlusCircle} />
       </button>
-      <button className="add append-row">
+      <button
+        className="add append-row"
+        onClick={() => setMaze(maze.appendRows(1))}
+      >
         <FontAwesomeIcon icon={faPlusCircle} />
       </button>
-      <button className="add append-column">
+      <button
+        className="add append-column"
+        onClick={() => setMaze(maze.appendColumns(1))}
+      >
         <FontAwesomeIcon icon={faPlusCircle} />
       </button>
       <button className="remove remove-first-row head">

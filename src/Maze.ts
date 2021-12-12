@@ -6,6 +6,7 @@ export enum Side {
   Right,
   Bottom,
 }
+const allSides = [Side.Left, Side.Top, Side.Right, Side.Bottom];
 
 export type Dimensions = {
   width: number;
@@ -130,7 +131,68 @@ export class Maze {
   set(x: number, y: number, side: Side, value: boolean): Maze {
     const maze = new Maze(this.#dimensions);
     maze.#walls = this.#walls.slice(0);
-    maze.#walls[this.#coordinateToIndex(new Wall(x, y, side))] = value;
+    maze.setMutable(x, y, side, value);
     return maze;
+  }
+
+  // Set the presence of a well at the specified coordinates
+  setMutable(x: number, y: number, side: Side, value: boolean) {
+    this.#walls[this.#coordinateToIndex(new Wall(x, y, side))] = value;
+  }
+
+  // Immutably resize the maze by prepending the number of specified columns and returning the new maze
+  prependColumns(numColumns: number): Maze {
+    const maze = new Maze({
+      width: this.#dimensions.width + numColumns,
+      height: this.#dimensions.height,
+    });
+    this.#copyWalls(maze, { x: numColumns, y: 0 });
+    return maze;
+  }
+
+  // Immutably resize the maze by prepending the number of specified rows and returning the new maze
+  prependRows(numRows: number): Maze {
+    const maze = new Maze({
+      width: this.#dimensions.width,
+      height: this.#dimensions.height + numRows,
+    });
+    this.#copyWalls(maze, { x: 0, y: numRows });
+    return maze;
+  }
+
+  // Immutably resize the maze by appending the number of specified columns and returning the new maze
+  appendColumns(numColumns: number): Maze {
+    const maze = new Maze({
+      width: this.#dimensions.width + numColumns,
+      height: this.#dimensions.height,
+    });
+    this.#copyWalls(maze, { x: 0, y: 0 });
+    return maze;
+  }
+
+  // Immutably resize the maze by appending the number of specified rows and returning the new maze
+  appendRows(numRows: number): Maze {
+    const maze = new Maze({
+      width: this.#dimensions.width,
+      height: this.#dimensions.height + numRows,
+    });
+    this.#copyWalls(maze, { x: 0, y: 0 });
+    return maze;
+  }
+
+  // Copy the walls from this maze into another maze
+  #copyWalls(destination: Maze, offset: { x: number; y: number }) {
+    range(this.#dimensions.width).forEach((x) => {
+      range(this.#dimensions.height).forEach((y) => {
+        allSides.forEach((side) => {
+          destination.setMutable(
+            x + offset.x,
+            y + offset.y,
+            side,
+            this.get(x, y, side),
+          );
+        });
+      });
+    });
   }
 }
