@@ -27,41 +27,47 @@ export function App() {
 
   const dimensions = maze.getDimensions();
   return (
-    <div
-      className="maze"
-      style={{ '--maze-columns': dimensions.width } as CSSPropertiesWithVars}
-      onMouseLeave={() => setHover(null)}
-    >
-      {range(dimensions.height).map((y) =>
-        range(dimensions.width).map((x) => (
-          <div
-            key={`${x},${y}`}
-            className={[
-              'cell',
-              maze.get(x, y, Side.Left) ? 'wall-left' : null,
-              maze.get(x, y, Side.Top) ? 'wall-top' : null,
-              maze.get(x, y, Side.Right) ? 'wall-right' : null,
-              maze.get(x, y, Side.Bottom) ? 'wall-bottom' : null,
-              hover && hover.equals(new Wall(x, y, Side.Left))
-                ? 'hover-wall-left'
-                : null,
-              hover && hover.equals(new Wall(x, y, Side.Top))
-                ? 'hover-wall-top'
-                : null,
-              hover && hover.equals(new Wall(x, y, Side.Right))
-                ? 'hover-wall-right'
-                : null,
-              hover && hover.equals(new Wall(x, y, Side.Bottom))
-                ? 'hover-wall-bottom'
-                : null,
-            ].join(' ')}
-            onClick={(event) => toggleWall(x, y, event)}
-            onMouseMove={(event) =>
-              setHover(new Wall(x, y, getClosestSide(event)))
-            }
-          />
-        )),
-      )}
+    <div className="maze">
+      <button className="prepend-row">Add</button>
+      <button className="prepend-column">Add</button>
+      <div
+        className="walls"
+        style={{ '--maze-columns': dimensions.width } as CSSPropertiesWithVars}
+        onMouseLeave={() => setHover(null)}
+      >
+        {range(dimensions.height).map((y) =>
+          range(dimensions.width).map((x) => (
+            <div
+              key={`${x},${y}`}
+              className={[
+                'cell',
+                maze.get(x, y, Side.Left) ? 'wall-left' : null,
+                maze.get(x, y, Side.Top) ? 'wall-top' : null,
+                maze.get(x, y, Side.Right) ? 'wall-right' : null,
+                maze.get(x, y, Side.Bottom) ? 'wall-bottom' : null,
+                hover && hover.equals(new Wall(x, y, Side.Left))
+                  ? 'hover-wall-left'
+                  : null,
+                hover && hover.equals(new Wall(x, y, Side.Top))
+                  ? 'hover-wall-top'
+                  : null,
+                hover && hover.equals(new Wall(x, y, Side.Right))
+                  ? 'hover-wall-right'
+                  : null,
+                hover && hover.equals(new Wall(x, y, Side.Bottom))
+                  ? 'hover-wall-bottom'
+                  : null,
+              ].join(' ')}
+              onClick={(event) => toggleWall(x, y, event)}
+              onMouseMove={(event) =>
+                setHover(new Wall(x, y, getClosestSide(event)))
+              }
+            />
+          )),
+        )}
+      </div>
+      <button className="append-row">Add</button>
+      <button className="append-column">Add</button>
     </div>
   );
 }

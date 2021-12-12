@@ -1,7 +1,7 @@
 body {
   --global-margin: 8px;
-  --global-width: calc(100vw - var(--global-margin) * 2);
-  --global-height: calc(100vh - var(--global-margin) * 2);
+  --global-width: calc(100vw - var(--global-margin) * 2 - 8em);
+  --global-height: calc(100vh - var(--global-margin) * 2 - 4em);
   margin: var(--global-margin);
 }
 
@@ -14,6 +14,48 @@ body {
 }
 
 .maze {
+  display: grid;
+  align-items: center;
+}
+
+.prepend-row {
+  grid-column-end: 2;
+  grid-column-start: 2;
+  grid-row-end: 1;
+  grid-row-start: 1;
+}
+.prepend-column {
+  grid-column-end: 1;
+  grid-column-start: 1;
+  grid-row-end: 2;
+  grid-row-start: 2;
+}
+.append-row {
+  grid-column-end: 2;
+  grid-column-start: 2;
+  grid-row-end: 3;
+  grid-row-start: 3;
+}
+.append-column {
+  grid-column-end: 3;
+  grid-column-start: 3;
+  grid-row-end: 2;
+  grid-row-start: 2;
+}
+
+.prepend-row,
+.append-row {
+  width: 4em;
+  height: 2em;
+  justify-self: center;
+}
+.prepend-column,
+.append-column {
+  width: 4em;
+  height: 2em;
+}
+
+.walls {
   --dimensions: calc(min(var(--global-width), var(--global-height)));
   --wall-width: 3px;
   --wall-color: black;
@@ -26,6 +68,10 @@ body {
   height: var(--dimensions);
   min-height: calc(var(--min-size) * var(--maze-columns));
   grid-auto-rows: 1fr;
+  grid-column-end: 2;
+  grid-column-start: 2;
+  grid-row-end: 2;
+  grid-row-start: 2;
   grid-template-columns: repeat(var(--maze-columns), 1fr);
 }
 
