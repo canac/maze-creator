@@ -31,8 +31,8 @@ export class Wall {
       this.y = y + 1;
       this.side = Side.Top;
     } else {
-      this.x = x;
-      this.y = y;
+      this.x = Math.floor(x);
+      this.y = Math.floor(y);
       this.side = side;
     }
   }
@@ -62,7 +62,10 @@ export class Maze {
   #dimensions: Dimensions;
 
   constructor(dimensions: Dimensions) {
-    this.#dimensions = { ...dimensions };
+    this.#dimensions = {
+      width: Math.floor(Math.max(dimensions.width, 1)),
+      height: Math.floor(Math.max(dimensions.height, 1)),
+    };
 
     const verticalDimensions = this.getVerticalDimensions();
     const horizontalDimensions = this.getHorizontalDimensions();
@@ -180,17 +183,41 @@ export class Maze {
     return maze;
   }
 
+  // Immutably resize the maze by deleting the number of specified columns from the beginning and returning the new maze
+  deleteFirstColumns(numColumns: number): Maze {
+    return this.prependColumns(-numColumns);
+  }
+
+  // Immutably resize the maze by deleting the number of specified rows from the beginning and returning the new maze
+  deleteFirstRows(numRows: number): Maze {
+    return this.prependRows(-numRows);
+  }
+
+  // Immutably resize the maze by deleting the number of specified columns from the end and returning the new maze
+  deleteLastColumns(numColumns: number): Maze {
+    return this.appendColumns(-numColumns);
+  }
+
+  // Immutably resize the maze by deleting the number of specified rows from the end and returning the new maze
+  deleteLastRows(numRows: number): Maze {
+    return this.appendRows(-numRows);
+  }
+
   // Copy the walls from this maze into another maze
   #copyWalls(destination: Maze, offset: { x: number; y: number }) {
     range(this.#dimensions.width).forEach((x) => {
       range(this.#dimensions.height).forEach((y) => {
         allSides.forEach((side) => {
-          destination.setMutable(
-            x + offset.x,
-            y + offset.y,
-            side,
-            this.get(x, y, side),
-          );
+          try {
+            destination.setMutable(
+              x + offset.x,
+              y + offset.y,
+              side,
+              this.get(x, y, side),
+            );
+          } catch (err) {
+            // Ignore out of bounds errors because the mazes might be different sizes
+          }
         });
       });
     });

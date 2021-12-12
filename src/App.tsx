@@ -30,6 +30,22 @@ export function App() {
     setMaze(maze.set(x, y, closestSide, !maze.get(x, y, closestSide)));
   }
 
+  function deleteFirstColumn() {
+    setMaze(maze.deleteFirstColumns(1));
+  }
+
+  function deleteFirstRow() {
+    setMaze(maze.deleteFirstRows(1));
+  }
+
+  function deleteLastColumn() {
+    setMaze(maze.deleteLastColumns(1));
+  }
+
+  function deleteLastRow() {
+    setMaze(maze.deleteLastRows(1));
+  }
+
   const dimensions = maze.getDimensions();
   return (
     <div
@@ -66,29 +82,35 @@ export function App() {
       >
         <FontAwesomeIcon icon={faPlusCircle} />
       </button>
-      <button className="remove remove-first-row head">
+      <button className="remove remove-first-row head" onClick={deleteFirstRow}>
         <FontAwesomeIcon icon={faTrash} />
       </button>
-      <button className="remove remove-first-row tail">
+      <button className="remove remove-first-row tail" onClick={deleteFirstRow}>
         <FontAwesomeIcon icon={faTrash} />
       </button>
-      <button className="remove remove-first-column head">
+      <button
+        className="remove remove-first-column head"
+        onClick={deleteFirstColumn}
+      >
         <FontAwesomeIcon icon={faTrash} />
       </button>
-      <button className="remove remove-first-column tail">
+      <button
+        className="remove remove-first-column tail"
+        onClick={deleteFirstColumn}
+      >
         <FontAwesomeIcon icon={faTrash} />
       </button>
       <button className="remove remove-last-row head">
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon icon={faTrash} onClick={deleteLastRow} />
       </button>
       <button className="remove remove-last-row tail">
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon icon={faTrash} onClick={deleteLastRow} />
       </button>
       <button className="remove remove-last-column head">
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon icon={faTrash} onClick={deleteLastColumn} />
       </button>
       <button className="remove remove-last-column tail">
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon icon={faTrash} onClick={deleteLastColumn} />
       </button>
       {range(dimensions.height).map((y) =>
         range(dimensions.width).map((x) => (
