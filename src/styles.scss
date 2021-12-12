@@ -29,15 +29,21 @@ body {
     repeat(calc(var(--maze-rows) + 2), 1fr) /
     repeat(calc(var(--maze-columns) + 2), 1fr);
   justify-self: center;
-}
 
-.maze .add {
-  padding: 8px;
-  border: none;
-  background-color: transparent;
-  color: hsl(120, 50%, 50%);
-  cursor: pointer;
-  font-size: 3em;
+  button {
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 2em;
+  }
+
+  .add {
+    color: hsl(120, 50%, 50%);
+  }
+  .remove {
+    color: hsl(0, 50%, 50%);
+  }
 }
 
 .prepend-row {
@@ -55,6 +61,37 @@ body {
 .append-column {
   grid-column: -2;
   grid-row: 1 / -1;
+}
+
+.remove-first-row {
+  grid-row: 2;
+}
+.remove-last-row {
+  grid-row: -3;
+}
+.remove-first-row,
+.remove-last-row {
+  &.head {
+    grid-column: 1;
+  }
+  &.tail {
+    grid-column: -2;
+  }
+}
+.remove-first-column {
+  grid-column: 2;
+}
+.remove-last-column {
+  grid-column: -3;
+}
+.remove-first-column,
+.remove-last-column {
+  &.head {
+    grid-row: 1;
+  }
+  &.tail {
+    grid-row: -2;
+  }
 }
 
 .cell {

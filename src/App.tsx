@@ -1,7 +1,7 @@
 import { minBy, range } from 'lodash';
 import { useState, CSSProperties, MouseEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Maze, Side, Wall } from './Maze';
 
 type CSSPropertiesWithVars = CSSProperties & {
@@ -53,6 +53,30 @@ export function App() {
       </button>
       <button className="add append-column">
         <FontAwesomeIcon icon={faPlusCircle} />
+      </button>
+      <button className="remove remove-first-row head">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+      <button className="remove remove-first-row tail">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+      <button className="remove remove-first-column head">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+      <button className="remove remove-first-column tail">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+      <button className="remove remove-last-row head">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+      <button className="remove remove-last-row tail">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+      <button className="remove remove-last-column head">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+      <button className="remove remove-last-column tail">
+        <FontAwesomeIcon icon={faTrash} />
       </button>
       {range(dimensions.height).map((y) =>
         range(dimensions.width).map((x) => (
