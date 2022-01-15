@@ -11,31 +11,44 @@ body {
 }
 
 .maze {
-  --dimensions: calc(min(var(--global-width), var(--global-height)));
+  // There are two extra rows and two extra columns for the buttons
+  --grid-columns: calc(var(--maze-columns) + 2);
+  --grid-rows: calc(var(--maze-rows) + 2);
+
+  // Sets the smallest allowable size of a maze cell
+  --min-size: 3em;
+
+  --dimensions: calc(
+    max(
+      var(--min-size),
+      min(
+        var(--global-width) / var(--grid-columns),
+        var(--global-height) / var(--grid-rows)
+      )
+    )
+  );
+
   --wall-width: 3px;
   --wall-color: black;
   --hover-add-color: hsl(120, 50%, 50%);
   --hover-remove-color: hsl(0, 50%, 50%);
-  --min-size: 3em;
 
   display: grid;
-  width: var(--dimensions);
-  min-width: calc(var(--min-size) * (var(--maze-columns) + 2));
-  height: var(--dimensions);
-  min-height: calc(var(--min-size) * (var(--maze-rows) + 2));
-  align-items: center;
+  width: calc(var(--dimensions) * var(--grid-columns));
+  height: calc(var(--dimensions) * var(--grid-rows));
   align-self: center;
   grid-template:
-    repeat(calc(var(--maze-rows) + 2), 1fr) /
-    repeat(calc(var(--maze-columns) + 2), 1fr);
+    repeat(var(--grid-rows), 1fr) /
+    repeat(var(--grid-columns), 1fr);
   justify-self: center;
 
   button {
-    padding: 8px;
+    --button-padding: 8px;
+    padding: var(--button-padding);
     border: none;
     background-color: transparent;
+    font-size: calc(var(--dimensions) - var(--button-padding) * 2);
     cursor: pointer;
-    font-size: 2em;
   }
 
   .add {
